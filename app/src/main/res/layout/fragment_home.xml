@@ -6,11 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBooks"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewBooks"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewBooks"
+        tools:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBooks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       />
+        android:layout_marginBottom="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="34dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

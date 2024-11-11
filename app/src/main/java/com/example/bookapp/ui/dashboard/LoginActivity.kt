@@ -58,6 +58,7 @@ class LoginActivity : AppCompatActivity() {
                     val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                     val editor = sharedPreferences.edit()
                     editor.putBoolean("isUserAuthenticated", true)
+                    editor.putString("token", response.body()?.token)
                     editor.apply()
 
                     // Navigate to the main activity

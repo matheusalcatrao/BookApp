@@ -10,14 +10,31 @@ import com.bumptech.glide.Glide
 import com.example.bookapp.R
 import com.example.bookapp.model.Book
 
-class BooksAdapter(private val bookList: List<Book>) :
-    RecyclerView.Adapter<BooksAdapter.BookViewHolder>() {
+class BooksAdapter(
+    private val bookList: List<Book>,
+    private val itemClickListener: (Book) -> Unit // Listener de clique para cada item
+) : RecyclerView.Adapter<BooksAdapter.BookViewHolder>() {
 
     class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
         val authorTextView: TextView = itemView.findViewById(R.id.authorTextView)
         val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
         val coverImageView: ImageView = itemView.findViewById(R.id.imageView2)
+
+        // Função para associar o listener de clique ao item
+        fun bind(book: Book, clickListener: (Book) -> Unit) {
+            titleTextView.text = book.title
+            authorTextView.text = book.author
+            descriptionTextView.text = book.year
+            Glide.with(itemView.context)
+                .load(book.photo)
+                .into(coverImageView)
+
+            // Definindo o clique no item
+            itemView.setOnClickListener {
+                clickListener(book) // Chama o listener com o item clicado
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
@@ -27,13 +44,7 @@ class BooksAdapter(private val bookList: List<Book>) :
     }
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
-        val book = bookList[position]
-        holder.titleTextView.text = book.title
-        holder.authorTextView.text = book.author
-        holder.descriptionTextView.text = book.year
-        Glide.with(holder.itemView.context)
-            .load(book.photo)  // Replace 'imageUrl' with the actual image field in the Book model
-            .into(holder.coverImageView) // Load into the ImageView
+        holder.bind(bookList[position], itemClickListener) // Passa o item e o listener
     }
 
     override fun getItemCount(): Int {
