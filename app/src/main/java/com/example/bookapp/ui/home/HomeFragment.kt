@@ -36,6 +36,11 @@ class HomeFragment : Fragment()  {
         val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val button = root.findViewById<View>(R.id.button2)
+        button.setOnClickListener {
+            button.visibility = View.GONE
+            fetchBooks()
+        }
 
         // Set up RecyclerView
         binding.recyclerViewBooks.layoutManager = LinearLayoutManager(requireContext())
@@ -49,6 +54,7 @@ class HomeFragment : Fragment()  {
         val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("token", "")
         val progressBar = binding.root.findViewById<View>(R.id.progressBar3)
+        val button = binding.root.findViewById<View>(R.id.button2)
         val authToken = "Bearer ${token}"
         RetrofitClient.instance.getAllBooks(authToken).enqueue(object : Callback<List<Book>> {
             override fun onResponse(call: Call<List<Book>>, response: Response<List<Book>>) {
@@ -69,10 +75,14 @@ class HomeFragment : Fragment()  {
                     Toast.makeText(requireContext(), "Failed to load books", Toast.LENGTH_SHORT).show()
                 }
                 progressBar.visibility = View.GONE
+                button.visibility = View.GONE
+
             }
 
             override fun onFailure(call: Call<List<Book>>, t: Throwable) {
                 progressBar.visibility = View.GONE
+                val button = binding.root.findViewById<View>(R.id.button2)
+                button.visibility = View.VISIBLE
                 Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 println(t.message)
             }
